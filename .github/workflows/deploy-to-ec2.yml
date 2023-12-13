@@ -25,9 +25,9 @@ jobs:
           docker buildx create --use
           docker buildx inspect --bootstrap
           docker buildx build --load -t my-doc-app:latest .
-          docker tag my-doc-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/3504finalexam:latest
+          docker tag my-doc-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/final:latest
           echo $(docker images)
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/3504finalexam:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/final:latest
 
       - name: Check Docker Image Build
         run: |
@@ -40,7 +40,7 @@ jobs:
 
       - name: Check Docker Image Pushed
         run: |
-          if docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/3504finalexam:latest &> /dev/null; then
+          if docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/final:latest &> /dev/null; then
             echo "Docker image pushed to Docker Hub successfully. Test passed!"
           else
             echo "Docker image not found on Docker Hub. Test failed."
@@ -69,6 +69,6 @@ jobs:
                 docker rm $existing_container
             fi
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/3504finalexam:latest
-            docker run -d -p 80:80 --name my-doc-app ${{ secrets.DOCKERHUB_USERNAME }}/3504finalexam:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/final:latest
+            docker run -d -p 80:80 --name my-doc-app ${{ secrets.DOCKERHUB_USERNAME }}/final:latest
             docker image prune -f
